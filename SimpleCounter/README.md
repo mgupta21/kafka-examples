@@ -1,3 +1,6 @@
+# Setup
+Ensure Zookeeper server and Kafka server are running before executing run scripts
+
 # SimpleCounter
 
 SimpleCounter is an example class to demonstrate how to implement a Kafka producer using Java.
