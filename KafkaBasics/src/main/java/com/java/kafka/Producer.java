@@ -1,35 +1,38 @@
 package com.java.kafka;
 
-import java.util.Properties;
+import java.io.IOException;
+import java.util.List;
 
 import org.apache.kafka.clients.producer.Callback;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.clients.producer.RecordMetadata;
 
-public class Producer {
+public class Producer extends KafkaBase {
 
-    private Properties    kafkaProps = new Properties();
     private KafkaProducer producer;
+    private final String  PROP_FILE_NAME = "producer.properties";
 
     public void config() {
-        kafkaProps.put("bootstrap.servers", "localhost:9092");
-
-        // kafkaProps.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
-        // kafkaProps.put("value.serializer", "com.java.kafka.CustomerSerializer");
-
-        kafkaProps.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
-        kafkaProps.put("value.serializer", "org.apache.kafka.common.serialization.StringSerializer");
-
-        producer = new KafkaProducer<String, String>(kafkaProps);
-
-    }
-
-    public void start() {
+        try {
+            loadProps(PROP_FILE_NAME);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         producer = new KafkaProducer<String, String>(kafkaProps);
     }
 
-    public void send(String type) {
+    public void send(List<ProducerRecord<String, String>> records) {
+        for (ProducerRecord<String, String> record : records) {
+            try {
+                producer.send(record);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public void sendWithOption(String type) {
         ProducerRecord<String, String> record = new ProducerRecord<>("Country", "Name", "France");
         try {
             if (type == "sync") {
@@ -63,16 +66,6 @@ public class Producer {
                 e.printStackTrace();
             }
         }
-    }
-
-    public static void main(String[] args) {
-        Producer p = new Producer();
-        p.config();
-        p.start();
-        p.send("sync");
-        // p.sendObj();
-
-        Consumer.run();
     }
 
 }
