@@ -22,5 +22,21 @@ ps -ef | grep kafka
 # create consumer (to read from a topic)
 /usr/local/kafka/bin/kafka-console-consumer.sh --zookeeper localhost:2181 --topic first
 
+
+***Schema Registry***
 # Start Schema Registry (for Avro)
-/usr/local/kafka/bin/schema-registry-start /usr/local/kafka/config/schema-registry.properties
+/usr/local/schema-registry/bin/schema-registry-start /usr/local/schema-registry/config/schema-registry.properties
+
+# Register a new version of a schema under the subject "Kafka-key"
+$ curl -X POST -i -H "Content-Type: application/vnd.schemaregistry.v1+json" \
+    --data '{"schema": "{\"type\": \"string\"}"}' \
+    http://localhost:8081/subjects/Kafka-key/versions
+        
+# List all subjects
+$ curl -X GET -i http://localhost:8081/subjects
+
+# Fetch version 1 of the schema registered under subject "Kafka-value"
+$ curl -X GET -i http://localhost:8081/subjects/Kafka-value/versions/1
+
+# Fetch the most recently registered schema under subject "Kafka-value"
+$ curl -X GET -i http://localhost:8081/subjects/Kafka-value/versions/latest

@@ -11,6 +11,9 @@ import org.apache.log4j.Logger;
 
 import com.java.kafka.KafkaBase;
 
+/**
+ * Created by mgupta on 6/25/16.
+ */
 public class Producer extends KafkaBase {
 
     private KafkaProducer       producer;

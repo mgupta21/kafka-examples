@@ -2,22 +2,15 @@
   "namespace": "customerManagement.avro",
   "type": "record",
   "name": "Customer",
-  "fields": [
-    {
-      "name": "id",
-      "type": "int"
-    },
-    {
-      "name": "name",
-      "type": "string"
-    },
-    {
-      "name": "email",
-      "type": [
-        "null",
-        "string"
-      ],
-      "default": "null"
-    }
-  ]
+  "fields": [{
+    "name": "id",
+    "type": "int"
+  }, {
+    "name": "name",
+    "type": "string"
+  }, {
+    "name": "email",
+    "type": ["null", "string"],
+    "default": "null"
+  }]
 }
