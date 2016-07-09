@@ -33,7 +33,10 @@ public class Producer extends KafkaBase {
     public void send(List<ProducerRecord<String, String>> records) {
         // Single producer can be used to send messages by multiple threads
         // Send returns future object
-        records.forEach(r -> producer.send(r));
+        records.forEach(r -> {
+            producer.send(r);
+            logger.info(String.format("Sending record : {%s, %s}", r.key(), r.value()));
+        });
     }
 
     /* send synchronously */

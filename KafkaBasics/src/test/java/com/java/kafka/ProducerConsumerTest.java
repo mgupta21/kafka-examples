@@ -1,8 +1,10 @@
 package com.java.kafka;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.junit.Before;
@@ -16,12 +18,23 @@ import com.java.kafka.producer.Producer;
  */
 public class ProducerConsumerTest {
 
-    private static final List<String> COUNTRY_NAMES = Arrays.asList("United Kingdom", "France", "Australia", "India", "United States", "Sweden");
-    private static final String       TOPIC         = "Country";
+    private static final String        TOPIC = "Country";
+    private static Map<String, String> testMap;
+
+    {
+        Map<String, String> map = new HashMap<>();
+        map.put("Joe", "United Kingdom");
+        map.put("Doe", "France");
+        map.put("Amy", "France");
+        map.put("Robert", "India");
+        map.put("Shane", "Australia");
+        map.put("Kira", "Australia");
+        testMap = Collections.unmodifiableMap(map);
+    }
 
     private List<ProducerRecord<String, String>> getRecordsForTopic(String topic) {
         List<ProducerRecord<String, String>> records = new ArrayList<>();
-        COUNTRY_NAMES.forEach(c -> records.add(new ProducerRecord<>(topic, c)));
+        testMap.forEach((k, v) -> records.add(new ProducerRecord<>(topic, k, v)));
         return records;
     }
 

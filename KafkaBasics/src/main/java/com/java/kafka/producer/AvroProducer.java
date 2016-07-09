@@ -25,7 +25,7 @@ public class AvroProducer extends KafkaBase {
     Producer<String, GenericRecord> producer;
     private final String            PROP_FILE_NAME        = "producer.avro.properties";
     private final String            AVRO_SCHEMA_FILE_NAME = "message.avro.json";
-    private static final Logger     logger                = Logger.getLogger(Producer.class);
+    private static final Logger     logger                = Logger.getLogger(AvroProducer.class);
 
     public void config() {
         try {
