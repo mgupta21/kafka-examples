@@ -6,19 +6,19 @@ package com.java.kafka.datamodel;
 public class Customer {
 
     private String customerName;
-    private int    customerID;
+    private int    customerId;
 
     public Customer(int id, String name) {
-        this.customerID = id;
+        this.customerId = id;
         this.customerName = name;
     }
 
-    public String getName() {
+    public String getCustomerName() {
         return customerName;
     }
 
-    public int getID() {
-        return customerID;
+    public int getCustomerId() {
+        return customerId;
     }
 
 }

@@ -1,4 +1,4 @@
-package com.java.kafka;
+package com.java.kafka.consumer;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -8,6 +8,8 @@ import java.util.Map;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
+
+import com.java.kafka.KafkaBase;
 
 /**
  * Created by mgupta on 6/25/16.

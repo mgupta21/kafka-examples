@@ -24,8 +24,8 @@ public class CustomerSerializer implements Serializer<Customer> {
             if (data == null)
                 return null;
             else {
-                if (data.getName() != null) {
-                    serializedName = data.getName().getBytes("UTF-8");
+                if (data.getCustomerName() != null) {
+                    serializedName = data.getCustomerName().getBytes("UTF-8");
                     stringSize = serializedName.length;
                 } else {
                     serializedName = new byte[0];
@@ -34,7 +34,7 @@ public class CustomerSerializer implements Serializer<Customer> {
             }
 
             ByteBuffer buffer = ByteBuffer.allocate(4 + 4 + stringSize);
-            buffer.putInt(data.getID());
+            buffer.putInt(data.getCustomerId());
             buffer.putInt(stringSize);
             buffer.put(serializedName);
 

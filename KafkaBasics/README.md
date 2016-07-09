@@ -21,3 +21,6 @@ ps -ef | grep kafka
 
 # create consumer (to read from a topic)
 /usr/local/kafka/bin/kafka-console-consumer.sh --zookeeper localhost:2181 --topic first
+
+# Start Schema Registry (for Avro)
+/usr/local/kafka/bin/schema-registry-start /usr/local/kafka/config/schema-registry.properties

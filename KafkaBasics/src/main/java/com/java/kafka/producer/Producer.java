@@ -1,4 +1,4 @@
-package com.java.kafka;
+package com.java.kafka.producer;
 
 import java.io.IOException;
 import java.util.List;
@@ -9,7 +9,7 @@ import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.clients.producer.RecordMetadata;
 import org.apache.log4j.Logger;
 
-import com.java.kafka.datamodel.Customer;
+import com.java.kafka.KafkaBase;
 
 public class Producer extends KafkaBase {
 
@@ -28,15 +28,9 @@ public class Producer extends KafkaBase {
 
     /* Fire and Forget : producer retry's to send the message but delivery is not guaranteed */
     public void send(List<ProducerRecord<String, String>> records) {
-        for (ProducerRecord<String, String> record : records) {
-            try {
-                // Single producer can be used to send messages by multiple threads
-                // Send returns future object
-                producer.send(record);
-            } catch (Exception e) {
-                logger.error("Error while sending message : " + e.getMessage());
-            }
-        }
+        // Single producer can be used to send messages by multiple threads
+        // Send returns future object
+        records.forEach(r -> producer.send(r));
     }
 
     /* send synchronously */
@@ -54,17 +48,6 @@ public class Producer extends KafkaBase {
     /* send Asynchronously */
     public void sendASynchronously(List<ProducerRecord<String, String>> records) {
         records.forEach(r -> producer.send(r, new ProducerCallback()));
-    }
-
-    public void sendObj() {
-
-        Customer customer = new Customer(01, "Mayank");
-        ProducerRecord<Integer, Customer> record = new ProducerRecord<Integer, Customer>("country", customer.getID(), customer);
-        try {
-            producer.send(record);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
     private class ProducerCallback implements Callback {

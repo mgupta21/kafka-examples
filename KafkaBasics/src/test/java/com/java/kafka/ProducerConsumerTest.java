@@ -8,6 +8,9 @@ import org.apache.kafka.clients.producer.ProducerRecord;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.java.kafka.consumer.Consumer;
+import com.java.kafka.producer.Producer;
+
 /**
  * Created by mgupta on 6/25/16.
  */
