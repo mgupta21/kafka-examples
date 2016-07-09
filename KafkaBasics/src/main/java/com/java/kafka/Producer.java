@@ -7,11 +7,15 @@ import org.apache.kafka.clients.producer.Callback;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.clients.producer.RecordMetadata;
+import org.apache.log4j.Logger;
+
+import com.java.kafka.datamodel.Customer;
 
 public class Producer extends KafkaBase {
 
-    private KafkaProducer producer;
-    private final String  PROP_FILE_NAME = "producer.properties";
+    private KafkaProducer       producer;
+    private final String        PROP_FILE_NAME = "producer.properties";
+    private static final Logger logger         = Logger.getLogger(Producer.class);
 
     public void config() {
         try {
@@ -22,29 +26,34 @@ public class Producer extends KafkaBase {
         producer = new KafkaProducer<String, String>(kafkaProps);
     }
 
+    /* Fire and Forget : producer retry's to send the message but delivery is not guaranteed */
     public void send(List<ProducerRecord<String, String>> records) {
         for (ProducerRecord<String, String> record : records) {
             try {
+                // Single producer can be used to send messages by multiple threads
+                // Send returns future object
                 producer.send(record);
             } catch (Exception e) {
-                e.printStackTrace();
+                logger.error("Error while sending message : " + e.getMessage());
             }
         }
     }
 
-    public void sendWithOption(String type) {
-        ProducerRecord<String, String> record = new ProducerRecord<>("Country", "Name", "France");
-        try {
-            if (type == "sync") {
-                producer.send(record);
-            } else if (type == "async_f") {
-                producer.send(record).get();
-            } else if (type == "async_c") {
-                producer.send(record, new ProducerCallback());
+    /* send synchronously */
+    public void sendSynchronously(List<ProducerRecord<String, String>> records) {
+        records.forEach(r -> {
+            try {
+                // Future.get() to wait until reply from kafka arrives
+                producer.send(r).get();
+            } catch (Exception e) {
+                logger.error("Error while sending message synchronously : " + e.getMessage());
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        });
+    }
+
+    /* send Asynchronously */
+    public void sendASynchronously(List<ProducerRecord<String, String>> records) {
+        records.forEach(r -> producer.send(r, new ProducerCallback()));
     }
 
     public void sendObj() {
@@ -60,10 +69,12 @@ public class Producer extends KafkaBase {
 
     private class ProducerCallback implements Callback {
 
+        private final Logger logger = Logger.getLogger(ProducerCallback.class);
+
         @Override
         public void onCompletion(RecordMetadata meta, Exception e) {
             if (e != null) {
-                e.printStackTrace();
+                logger.error("Error while sending message Asynchronously : " + e.getMessage());
             }
         }
     }

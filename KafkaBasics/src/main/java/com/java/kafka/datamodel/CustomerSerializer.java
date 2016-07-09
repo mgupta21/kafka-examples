@@ -1,4 +1,4 @@
-package com.java.kafka;
+package com.java.kafka.datamodel;
 
 import java.nio.ByteBuffer;
 import java.util.Map;

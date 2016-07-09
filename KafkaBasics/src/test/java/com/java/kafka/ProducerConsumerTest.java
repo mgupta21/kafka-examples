@@ -39,4 +39,16 @@ public class ProducerConsumerTest {
         consumer.consume();
     }
 
+    @Test
+    public void testSynchronousSendAndReceive() {
+        producer.sendSynchronously(getRecordsForTopic(TOPIC));
+        consumer.consume();
+    }
+
+    @Test
+    public void testASynchronousSendAndReceive() {
+        producer.sendASynchronously(getRecordsForTopic(TOPIC));
+        consumer.consume();
+    }
+
 }

@@ -1,4 +1,4 @@
-package com.java.kafka;
+package com.java.kafka.datamodel;
 
 /**
  * Created by mgupta on 6/24/16.
